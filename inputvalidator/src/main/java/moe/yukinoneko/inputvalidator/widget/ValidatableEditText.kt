@@ -56,7 +56,7 @@ class ValidatableEditText @JvmOverloads constructor(
 
             validator.addRule(
                 Rule(regexErrorMessage) {
-                    Pattern.matches(regex, it)
+                    (!notBlank && it.isBlank()) || Pattern.matches(regex, it)
                 }
             )
         }
