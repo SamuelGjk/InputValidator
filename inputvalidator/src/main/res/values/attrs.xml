@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ValidatableEditText">
+        <attr name="validate_not_blank" format="boolean" />
+        <attr name="validate_not_blank_error_message" format="string" />
+        <attr name="validate_min_length" format="integer" />
+        <attr name="validate_min_length_error_message" format="string" />
+        <attr name="validate_max_length" format="integer" />
+        <attr name="validate_max_length_error_message" format="string" />
+        <attr name="validate_regex" format="string" />
+        <attr name="validate_regex_error_message" format="string" />
+    </declare-styleable>
+</resources>

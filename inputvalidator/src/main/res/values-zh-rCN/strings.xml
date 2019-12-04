@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">InputValidator</string>
+    <string name="default_not_blank_error_message">不能为空</string>
+    <string name="default_min_length_error_message">不能少于 %1$d 个字</string>
+    <string name="default_max_length_error_message">不能多于 %1$d 个字</string>
+    <string name="default_regex_error_message">无效的文字</string>
+</resources>
