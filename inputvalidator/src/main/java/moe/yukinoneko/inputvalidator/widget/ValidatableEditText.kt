@@ -23,31 +23,39 @@ class ValidatableEditText @JvmOverloads constructor(
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.ValidatableEditText)
 
-        val notBlank = a.getBoolean(R.styleable.ValidatableEditText_validate_not_blank, false)
+        val notEmpty = a.getBoolean(R.styleable.ValidatableEditText_validate_not_empty, false)
         val minLength = a.getInteger(R.styleable.ValidatableEditText_validate_min_length, -1)
         val maxLength = a.getInteger(R.styleable.ValidatableEditText_validate_max_length, -1)
         val regex = a.getString(R.styleable.ValidatableEditText_validate_regex)
 
-        if (notBlank) {
+        if (notEmpty) {
             val notEmptyErrorMessage = a.getString(
-                R.styleable.ValidatableEditText_validate_not_blank_error_message
-            ) ?: context.getString(R.string.default_not_blank_error_message)
+                R.styleable.ValidatableEditText_validate_not_empty_error_message
+            ) ?: context.getString(R.string.default_not_empty_error_message)
 
-            validator.addRule(Rule(notEmptyErrorMessage) { it.isNotBlank() })
+            validator.addRule(Rule(notEmptyErrorMessage) { it.isNotEmpty() })
         }
         if (minLength > -1) {
             val minLengthErrorMessage = a.getString(
                 R.styleable.ValidatableEditText_validate_min_length_error_message
             ) ?: context.getString(R.string.default_min_length_error_message, minLength)
 
-            validator.addRule(Rule(minLengthErrorMessage) { it.length >= minLength })
+            validator.addRule(
+                Rule(minLengthErrorMessage) {
+                    (!notEmpty && it.isEmpty()) || it.length >= minLength
+                }
+            )
         }
         if (maxLength > -1) {
             val maxLengthErrorMessage = a.getString(
                 R.styleable.ValidatableEditText_validate_max_length_error_message
             ) ?: context.getString(R.string.default_max_length_error_message, maxLength)
 
-            validator.addRule(Rule(maxLengthErrorMessage) { it.length <= maxLength })
+            validator.addRule(
+                Rule(maxLengthErrorMessage) {
+                    (!notEmpty && it.isEmpty()) || it.length <= maxLength
+                }
+            )
         }
         if (regex != null) {
             val regexErrorMessage = a.getString(
@@ -56,7 +64,7 @@ class ValidatableEditText @JvmOverloads constructor(
 
             validator.addRule(
                 Rule(regexErrorMessage) {
-                    (!notBlank && it.isBlank()) || Pattern.matches(regex, it)
+                    (!notEmpty && it.isEmpty()) || Pattern.matches(regex, it)
                 }
             )
         }
