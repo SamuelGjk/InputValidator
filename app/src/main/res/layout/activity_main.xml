@@ -58,8 +58,8 @@
         app:layout_constraintEnd_toStartOf="@+id/editText3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:validate_not_blank="true"
-        app:validate_not_blank_error_message="NOT BLANK!!!" />
+        app:validate_not_empty="true"
+        app:validate_not_empty_error_message="NOT BLANK!!!" />
 
     <moe.yukinoneko.inputvalidator.widget.ValidatableEditText
         android:id="@+id/editText3"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toTopOf="@+id/editText2"
         app:validate_max_length="10"
         app:validate_min_length="5"
-        app:validate_not_blank="true" />
+        app:validate_not_empty="true" />
 
     <moe.yukinoneko.inputvalidator.widget.ValidatableEditText
         android:id="@+id/editText4"

@@ -1,6 +1,7 @@
-package moe.yukinoneko.inputvalidator
+package moe.yukinoneko.inputvalidator.internal
 
 import android.widget.EditText
+import moe.yukinoneko.inputvalidator.InputValidator
 import moe.yukinoneko.inputvalidator.model.Rule
 import moe.yukinoneko.inputvalidator.model.ValidationError
 
@@ -34,19 +35,17 @@ internal class Validator {
         }
     }
 
-    fun validateWithShowError(editText: EditText): Boolean {
+    fun validateWithErrorHandler(editText: EditText): Boolean {
         val failed = rules.find { !it.condition(editText.text) }
-        failed?.let {
-            editText.error = it.errorMessage
-        }
+        failed?.let { InputValidator.defaultErrorHandler(editText, it.errorMessage) }
         return failed == null
     }
 
-    fun validateWithShowError(
+    fun validateWithErrorHandler(
             editText: EditText, onPassed: () -> Unit, onFailed: (error: ValidationError) -> Unit
     ) {
         rules.find { !it.condition(editText.text) }?.let {
-            editText.error = it.errorMessage
+            InputValidator.defaultErrorHandler(editText, it.errorMessage)
         }
 
         validate(editText, onPassed, onFailed)

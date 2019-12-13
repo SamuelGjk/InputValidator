@@ -6,7 +6,7 @@ import moe.yukinoneko.inputvalidator.model.ValidationError
 /**
  * Created by SamuelGjk on 2019/12/4.
  */
-object ValidatableCollections {
+object CollectionsValidator {
 
     @JvmStatic
     fun validate(vararg validations: Validatable): Boolean {
@@ -36,29 +36,29 @@ object ValidatableCollections {
     }
 
     @JvmStatic
-    fun validateWithShowError(vararg validations: Validatable): Boolean {
-        return validateWithShowError(validations.toList())
+    fun validateWithErrorHandler(vararg validations: Validatable): Boolean {
+        return validateWithErrorHandler(validations.toList())
     }
 
     @JvmStatic
-    fun validateWithShowError(validations: List<Validatable>): Boolean {
-        return validations.filterNot { it.validateWithShowError() }.isEmpty()
+    fun validateWithErrorHandler(validations: List<Validatable>): Boolean {
+        return validations.filterNot { it.validateWithErrorHandler() }.isEmpty()
     }
 
     @JvmStatic
-    fun validateWithShowError(
+    fun validateWithErrorHandler(
             vararg validations: Validatable,
             onPassed: () -> Unit, onFailed: (errors: List<ValidationError>) -> Unit
     ) {
-        validateWithShowError(validations.toList(), onPassed, onFailed)
+        validateWithErrorHandler(validations.toList(), onPassed, onFailed)
     }
 
     @JvmStatic
-    fun validateWithShowError(
+    fun validateWithErrorHandler(
             validations: List<Validatable>,
             onPassed: () -> Unit, onFailed: (errors: List<ValidationError>) -> Unit
     ) {
-        val failedValidations = validations.filterNot { it.validateWithShowError() }
+        val failedValidations = validations.filterNot { it.validateWithErrorHandler() }
         callback(failedValidations, onPassed, onFailed)
     }
 

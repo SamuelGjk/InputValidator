@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.EditText
 import moe.yukinoneko.inputvalidator.R
-import moe.yukinoneko.inputvalidator.Validator
+import moe.yukinoneko.inputvalidator.internal.Validator
 import moe.yukinoneko.inputvalidator.interfaces.Validatable
 import moe.yukinoneko.inputvalidator.model.Rule
 import moe.yukinoneko.inputvalidator.model.ValidationError
@@ -87,11 +87,11 @@ class ValidatableEditText @JvmOverloads constructor(
         validator.validate(this, onPassed, onFailed)
     }
 
-    override fun validateWithShowError(): Boolean = validator.validateWithShowError(this)
+    override fun validateWithErrorHandler(): Boolean = validator.validateWithErrorHandler(this)
 
-    override fun validateWithShowError(
+    override fun validateWithErrorHandler(
             onPassed: () -> Unit, onFailed: (error: ValidationError) -> Unit
     ) {
-        validator.validateWithShowError(this, onPassed, onFailed)
+        validator.validateWithErrorHandler(this, onPassed, onFailed)
     }
 }

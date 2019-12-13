@@ -1,10 +1,13 @@
 package moe.yukinoneko.inputvalidator.sample
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import moe.yukinoneko.inputvalidator.ValidatableCollections
-import moe.yukinoneko.inputvalidator.ValidationWrapper
+import moe.yukinoneko.inputvalidator.CollectionsValidator
+import moe.yukinoneko.inputvalidator.InputValidator
+import moe.yukinoneko.inputvalidator.ValidatableWrapper
 import moe.yukinoneko.inputvalidator.model.Rule
 import java.util.regex.Pattern
 
@@ -14,12 +17,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        InputValidator.setErrorHandler { _, errorMessage ->
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        }
+
         // single
         buttonSingleWithResult.setOnClickListener {
-            textView1.text = editText1.validateWithShowError().toString()
+            textView1.text = editText1.validateWithErrorHandler().toString()
         }
         buttonSingleWithCallback.setOnClickListener {
-            editText1.validateWithShowError(
+            editText1.validateWithErrorHandler(
                     { textView1.text = "true" },
                     { error -> textView1.text = error.messages.joinToString() }
             )
@@ -27,11 +34,13 @@ class MainActivity : AppCompatActivity() {
 
         // collections
         buttonCollectionsWithResult.setOnClickListener {
-            textView2.text = ValidatableCollections.validateWithShowError(editText2, editText3, editText4).toString()
+            textView2.text = CollectionsValidator.validateWithErrorHandler(
+                    editText2, editText3, editText4
+            ).toString()
         }
         buttonCollectionsWithCallback.setOnClickListener {
             textView2.text = ""
-            ValidatableCollections.validateWithShowError(
+            CollectionsValidator.validateWithErrorHandler(
                     editText2, editText3, editText4,
                     onPassed = { textView2.text = "true" },
                     onFailed = { errors ->
@@ -46,16 +55,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         // wrapper
-        val wrapper1 = ValidationWrapper(editText5)
+        val wrapper1 = ValidatableWrapper(editText5)
                 .addRule(Rule("wrapper1: not blank") { it.isNotBlank() })
                 .addRule(Rule("wrapper2: min length") { it.length >= 5 })
-        val wrapper2 = ValidationWrapper(editText6).addRule(Rule("wrapper2: invalid") { Pattern.matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", it) })
+        val wrapper2 = ValidatableWrapper(editText6).addRule(
+                Rule("wrapper2: invalid") {
+                    Pattern.matches(
+                            "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", it
+                    )
+                })
         buttonWrapperWithResult.setOnClickListener {
-            textView3.text = ValidatableCollections.validateWithShowError(wrapper1, wrapper2).toString()
+            textView3.text = CollectionsValidator.validateWithErrorHandler(
+                    wrapper1, wrapper2
+            ).toString()
         }
         buttonWrapperWithCallback.setOnClickListener {
             textView3.text = ""
-            ValidatableCollections.validateWithShowError(
+            CollectionsValidator.validateWithErrorHandler(
                     wrapper1, wrapper2,
                     onPassed = { textView3.text = "true" },
                     onFailed = { errors ->

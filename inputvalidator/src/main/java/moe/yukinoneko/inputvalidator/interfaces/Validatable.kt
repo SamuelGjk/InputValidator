@@ -18,7 +18,7 @@ interface Validatable {
 
     fun validate(onPassed: () -> Unit, onFailed: (error: ValidationError) -> Unit)
 
-    fun validateWithShowError(): Boolean
+    fun validateWithErrorHandler(): Boolean
 
-    fun validateWithShowError(onPassed: () -> Unit, onFailed: (error: ValidationError) -> Unit)
+    fun validateWithErrorHandler(onPassed: () -> Unit, onFailed: (error: ValidationError) -> Unit)
 }

@@ -2,13 +2,14 @@ package moe.yukinoneko.inputvalidator
 
 import android.widget.EditText
 import moe.yukinoneko.inputvalidator.interfaces.Validatable
+import moe.yukinoneko.inputvalidator.internal.Validator
 import moe.yukinoneko.inputvalidator.model.Rule
 import moe.yukinoneko.inputvalidator.model.ValidationError
 
 /**
  * Created by SamuelGjk on 2019/12/3.
  */
-class ValidationWrapper(private val editText: EditText) : Validatable {
+class ValidatableWrapper(private val editText: EditText) : Validatable {
 
     private val validator = Validator()
 
@@ -27,11 +28,11 @@ class ValidationWrapper(private val editText: EditText) : Validatable {
         validator.validate(editText, onPassed, onFailed)
     }
 
-    override fun validateWithShowError(): Boolean = validator.validateWithShowError(editText)
+    override fun validateWithErrorHandler(): Boolean = validator.validateWithErrorHandler(editText)
 
-    override fun validateWithShowError(
+    override fun validateWithErrorHandler(
             onPassed: () -> Unit, onFailed: (error: ValidationError) -> Unit
     ) {
-        validator.validateWithShowError(editText, onPassed, onFailed)
+        validator.validateWithErrorHandler(editText, onPassed, onFailed)
     }
 }
